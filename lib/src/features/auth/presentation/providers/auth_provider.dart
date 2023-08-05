@@ -71,6 +71,16 @@ class AuthNotifier extends StateNotifier<AuthState> {
     }
   }
 
+    Future<void> resetPassword(String token, String password) async {
+    try {
+      final user = await authRepository.resetPassword(token, password);
+      _setLoggedUser(user);
+    } catch (e) {
+      logout((e is CustomError) ? e.message : 'Error no controlado');
+    }
+  }
+
+
   void _setLoggedUser(User user) async {
     //Guardamos el token el el shared preferences
     await keyValueStorageService.setKeyValue('token', user.token);

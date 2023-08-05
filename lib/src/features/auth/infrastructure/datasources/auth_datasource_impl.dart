@@ -82,14 +82,34 @@ class AuthDataSourceImpl extends AuthDatasource {
   }
 
   @override
-  Future<bool> recoveryPassword( String email) async {
+  Future<bool> recoveryPassword(String email) async {
     try {
       await dio.get('/auth/forgot-password/$email');
 
-      return true; 
+      return true;
     } on DioException catch (e) {
       if (e.response?.statusCode == 401) {
         throw CustomError(e.response?.data['message'] ?? 'Email does not exist');
+      }
+      if (e.error.runtimeType == SocketException) {
+        throw CustomError('No se pudo contactar con el servidor.');
+      }
+      throw Exception();
+    } catch (e) {
+      throw Exception();
+    }
+  }
+
+  @override
+  Future<User> resetPassword(String token, String password) async {
+    try {
+      final response = await dio.get('/auth/reset-password/$token', data: {'password': password});
+
+      final user = UserMapper.userJsonToEntity(response.data);
+      return user;
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 401) {
+        throw CustomError(e.response?.data['message'] ?? 'Token incorrecto o caducado.');
       }
       if (e.error.runtimeType == SocketException) {
         throw CustomError('No se pudo contactar con el servidor.');

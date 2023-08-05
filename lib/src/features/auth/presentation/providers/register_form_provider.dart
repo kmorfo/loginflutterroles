@@ -104,14 +104,14 @@ class RegisterFormState {
   @override
   String toString() {
     return '''
-    LoginFormState:
-      isPosting: $isPosting
+    RegisterFormState:
+      isPosting:    $isPosting
       isFormPosted: $isFormPosted
-      isValid: $isValid
-      fullName: $fullName
-      email: $email
-      password: $password
-      obscureText: $obscureText
+      isValid:      $isValid
+      fullName:     $fullName
+      email:        $email
+      password:     $password
+      obscureText:  $obscureText
     ''';
   }
 }

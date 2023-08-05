@@ -62,11 +62,11 @@ class RecoveryFormState {
   @override
   String toString() {
     return '''
-    LoginFormState:
-      isPosting: $isPosting
+    RecoveryFormState:
+      isPosting:    $isPosting
       isFormPosted: $isFormPosted
-      isValid: $isValid
-      email: $email
+      isValid:      $isValid
+      email:        $email
     ''';
   }
 }

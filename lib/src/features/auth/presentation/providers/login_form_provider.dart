@@ -94,12 +94,12 @@ class LoginFormState {
   String toString() {
     return '''
     LoginFormState:
-      isPosting: $isPosting
+      isPosting:    $isPosting
       isFormPosted: $isFormPosted
-      isValid: $isValid
-      email: $email
-      password: $password
-      obscureText: $obscureText
+      isValid:      $isValid
+      email:        $email
+      password:     $password
+      obscureText:  $obscureText
     ''';
   }
 }
