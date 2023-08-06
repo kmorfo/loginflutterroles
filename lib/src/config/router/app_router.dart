@@ -1,5 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+
+import 'package:skeleton/src/features/admin/admin.dart';
 import 'package:skeleton/src/features/user/presentation/screens/user_home.dart';
 
 import '../../features/auth/auth.dart';
@@ -18,6 +20,12 @@ final goRouterProvier = Provider((ref) {
       GoRoute(
         path: '/',
         builder: (context, state) => const UserScreen(),
+      ),
+
+      ///* Admin Screen
+      GoRoute(
+        path: '/admin',
+        builder: (context, state) => const AdminScreen(),
       ),
 
       ///* Pantalla de carga y comprobaciones
@@ -57,7 +65,11 @@ final goRouterProvier = Provider((ref) {
       final isGoingTo = state.matchedLocation;
       final authStatus = goRouterNotifier.authStatus;
 
-      if ((isGoingTo == '/') && authStatus == AuthStatus.checking) {
+      //Obtenemos el rol del usuario para redirigir a la pantalla user o admin
+      final authState = ref.watch(authProvider.notifier).state;
+      final bool isAdmin = authState.user?.isAdmin ?? false;
+
+      if ((isGoingTo == '/' || isGoingTo == '/admin') && authStatus == AuthStatus.checking) {
         return '/loading';
       }
 
@@ -70,13 +82,14 @@ final goRouterProvier = Provider((ref) {
         return '/login';
       }
 
+      //Cuando estamos autenticados, redirigiremos a la pantalla del usuario, evitando que navege a las de login
       if (authStatus == AuthStatus.authenticated) {
         if (isGoingTo == '/login' ||
             isGoingTo == '/register' ||
             isGoingTo == '/recovery-password' ||
             isGoingTo.startsWith('/reset-password') ||
             isGoingTo == '/loading') {
-          return '/';
+          return isAdmin ? '/admin' : '/';
         }
       }
       return null;
