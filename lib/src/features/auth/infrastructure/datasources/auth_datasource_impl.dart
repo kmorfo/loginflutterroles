@@ -59,11 +59,12 @@ class AuthDataSourceImpl extends AuthDatasource {
 
   @override
   Future<User> register(String fullName, String email, String password) async {
+    ///auth/register Dependiendo de como tengamos la ruta 
     try {
-      final response = await dio.post('/auth/register', data: {
+      final response = await dio.post('/auth/signup', data: {
         'email': email,
         'password': password,
-        "fullName": fullName,
+        'fullName': fullName,
       });
 
       final user = UserMapper.userJsonToEntity(response.data);
